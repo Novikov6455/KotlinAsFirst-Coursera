@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
 import lesson1.task1.discriminant
@@ -73,7 +74,14 @@ fun ageDescription(age: Int): String = TODO()
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val sumTime = t1 + t2 + t3
+    val fullWay = v1 * t1 + v2 * t2 + v3 * t3
+    val halfWay = fullWay / 2
+    if (halfWay <= v1 * t1) return halfWay / v1
+    if (halfWay <= v1 * t1 + v2 * t2) return t1 + (halfWay - v1 * t1) / v2
+    return t1 + t2 + (halfWay - v1 * t1 - v2 * t2) / v3
+}
 
 /**
  * Простая
@@ -120,4 +128,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if (a > d || c > b) return -1
+    if (a == d || c == b) return 0
+    if (a > c && b < d) return b - a
+    if (c > a && b < d) return b - c
+    if (c > a && b > d) return d - c
+    if (a > c && b > d) return d - a
+    return -1
+}
