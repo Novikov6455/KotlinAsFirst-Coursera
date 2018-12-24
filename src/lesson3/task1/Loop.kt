@@ -16,6 +16,13 @@ fun factorial(n: Int): Double {
     return result
 }
 
+/*** Factorial2  ***************************************************************/
+fun factorial2 (n: Int): Double =
+        if (n <= 1) 1.0
+        else n * factorial2 (n - 1)
+
+
+
 /**
  * Пример
  *
@@ -66,7 +73,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var i = 1
+    if (n == 0) return 1
+    while (n / Math.pow(10.0, i.toDouble()) >= 1.0) i += 1
+    return i
+}
 
 /**
  * Простая
@@ -74,7 +86,21 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var a = 1
+    var b = 1
+    var c = 1 + 1
+    var result = 0
+    for (i in 1..n){
+        result = a
+        a = b
+        b = c
+        c = a + b
+    }
+    return result
+}
+
+
 
 /**
  * Простая
@@ -82,14 +108,24 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    for (k in 2..m*n){
+        if (k%m == 0 && k%n == 0) return k
+    }
+    return n*m
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    for (k in 2..n){
+        if (n%k == 0)return k
+    }
+    return n
+}
 
 /**
  * Простая
@@ -105,7 +141,12 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    for (k in 2.. m+n){
+        if (m%k == 0 && n%k == 0) return false
+    }
+    return true
+}
 
 /**
  * Простая
@@ -202,4 +243,43 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var numFib:Int = 1
+    var valFib:Int = fib(numFib)
+    var countDig:Int = digitNumber(valFib)
+    var iOfNumber:Int = 0
+    var val_iOfNumber:Int = 0
+    while (numFib <= 30) {
+        valFib = fib(numFib)
+        countDig = digitNumber(valFib)
+        while (true) {
+            if (countDig == 1) {
+                iOfNumber++
+                val_iOfNumber = valFib
+                if (iOfNumber == n) return val_iOfNumber
+            }
+            if (countDig == 2) {
+                iOfNumber++
+                val_iOfNumber = valFib / 10
+                if (iOfNumber == n) return val_iOfNumber
+                iOfNumber++
+                val_iOfNumber = valFib % 10
+                if (iOfNumber == n) return val_iOfNumber
+            }
+            if (countDig == 3){
+                iOfNumber++
+                val_iOfNumber = valFib / 100
+                if (iOfNumber == n) return val_iOfNumber
+                iOfNumber++
+                val_iOfNumber = valFib / 10 - (valFib / 100)*10
+                if (iOfNumber == n) return val_iOfNumber
+                iOfNumber++
+                val_iOfNumber = valFib  % 10
+                if (iOfNumber == n) return val_iOfNumber
+            }
+            if (iOfNumber <= n) break
+        }
+    numFib++
+    }
+    return val_iOfNumber
+}

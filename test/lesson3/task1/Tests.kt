@@ -19,6 +19,17 @@ class Tests {
 
     @Test
     @Tag("Example")
+    fun factorial2() {
+        assertEquals(1.0, factorial2(0), 1e-5)
+        assertEquals(1.0, factorial2(1), 1e-5)
+        assertEquals(6.0, factorial2(3), 1e-5)
+        assertEquals(120.0, factorial2(5), 1e-5)
+        assertEquals(3628800.0, factorial2(10), 1e-5)
+        assertEquals(2.43290200817664E18, factorial2(20), 1E10)
+    }
+
+    @Test
+    @Tag("Example")
     fun isPrime() {
         assertFalse(isPrime(1))
         assertTrue(isPrime(2))
@@ -79,6 +90,7 @@ class Tests {
         assertEquals(1, fib(1))
         assertEquals(1, fib(2))
         assertEquals(2, fib(3))
+        assertEquals(3, fib(4))
         assertEquals(5, fib(5))
         assertEquals(21, fib(8))
         assertEquals(102334155, fib(40))
@@ -236,6 +248,7 @@ class Tests {
     fun fibSequenceDigit() {
         assertEquals(1, fibSequenceDigit(1))
         assertEquals(1, fibSequenceDigit(2))
+        assertEquals(2, fibSequenceDigit(3))
         assertEquals(3, fibSequenceDigit(4))
         assertEquals(2, fibSequenceDigit(9))
         assertEquals(5, fibSequenceDigit(14))

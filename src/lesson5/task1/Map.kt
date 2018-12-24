@@ -94,7 +94,28 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>,
+                    mapB: Map<String, String>): Map<String, String> {
+    val result: MutableMap<String, String> = mutableMapOf()
+    val keyAB = mapA.keys + mapB.keys
+    if (keyAB.isEmpty()) return result
+    for (key in keyAB){
+        if (key in mapA && key !in mapB){
+            result[key] = mapA[key] + ""
+        }
+        if (key in mapB && key !in mapA){
+            result[key] = mapB[key] + ""
+        }
+        if (key in mapA && key in mapB && (mapA[key] == mapB[key])) {
+            result[key] = mapA[key] + ""
+        }
+        if (key in mapA && key in mapB && (mapA[key] != mapB[key])){
+            result[key] = mapA[key] + ", " + mapB[key]
+        }
+        println("key in keySet = $key, result = $result")
+    }
+    return result
+}
 
 /**
  * Простая
@@ -130,7 +151,36 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    //val container = stockPrices.groupingBy { it }.eachCount()
+    val ticker: MutableSet<String>
+    val tikSumPrice: MutableMap<String, Double> = mutableMapOf()
+    val tikCount: MutableMap<String, Int> = mutableMapOf()
+    val result: MutableMap<String,Double> = mutableMapOf<String, Double>()
+    if (stockPrices.isEmpty()) return result
+    for (item in stockPrices){
+        if (item.first !in tikCount) {
+            tikCount[item.first] = 1
+            tikSumPrice[item.first] = item.second
+        }else{
+            tikCount[item.first] = tikCount[item.first]!!.plus(1)
+            tikSumPrice[item.first] = tikSumPrice[item.first]!! + item.second
+        }
+    }
+    ticker = tikCount.keys
+    //result = (tikSumPrice!! / tikCount!!).toMutableMap() не работает !!!!!
+    for (tik in ticker){
+        val averagePrice = tikSumPrice[tik]!! / tikCount[tik]!!
+        result[tik] = averagePrice
+        println("tikSum price = $tikSumPrice, tikCount = $tikCount, result = $result")
+    }
+    return result
+}
+
+//private fun <K, V> Map<K, V>.div(tikCount: MutableMap<K, Int>): MutableMap<K, V> {
+//    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//}
+
 
 /**
  * Средняя
@@ -221,7 +271,19 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val container: MutableMap<String, Int> = mutableMapOf()
+    if (list.isEmpty()) return container
+    list.forEach { item ->
+        if (item in container) container[item] = container[item]!!.plus(1)
+        else container[item] = 1
+        println("container $container")
+    }
+    return container.filterValues { it > 1 }
+}
+
+fun extractRepeats01(list: List<String>): Map<String, Int> =
+        list.groupingBy { it }.eachCount().filterValues { it > 1 }
 
 /**
  * Средняя
